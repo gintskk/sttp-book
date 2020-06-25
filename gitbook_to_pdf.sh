@@ -55,7 +55,7 @@ if [ -d "$GITBOOK_REP" ]; then
               --variable documentclass=book \
               -H latex-conf/head.tex \
               -V subparagraph \
-              --resource-path="./:chapters/getting-started/:chapters/intelligent-testing:chapters/pragmatic-testing:chapters/testing-techniques:chapters/appendix" \
+              --resource-path="./:chapters/preface:chapters/getting-started:chapters/testing-techniques:chapters/pragmatic-testing:chapters/testing-into-context:chapters/non-functional-testing:chapters/intelligent-testing:chapters/appendix" \
               --toc --toc-depth=3 | \
       perl -pe "s/img.*\/(.*)\.(svg|png|jpg)/temp\/\1.pdf/g" | \
       perl -pe 's/\\ / /g' | \
