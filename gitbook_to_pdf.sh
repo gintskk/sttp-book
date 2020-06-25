@@ -1,6 +1,6 @@
-# #!/bin/bash
+#!/bin/bash
 
-GITBOOK_REP=$1
+GITBOOK_REP="$PWD"
 SUMMARY_FILE="SUMMARY.md"
 echo $OUTPUT_FILE
 
@@ -28,7 +28,7 @@ if [ -d "$GITBOOK_REP" ]; then
   cp -f assets/pdf/* temp
   if [ -f "$SUMMARY_FILE" ]; then
     # read summary and get texts by order in a single big file
-    # we replace: 
+    # we replace:
     #   hint tip and working by --- markdown block
     #   $$ -> $ (for latex math mode)
     #   old image paths to temp folder
@@ -60,9 +60,9 @@ if [ -d "$GITBOOK_REP" ]; then
       perl -pe "s/img.*\/(.*)\.(svg|png|jpg)/temp\/\1.pdf/g" | \
       perl -pe 's/\\ / /g' | \
       perl -pe 's/(\\\^\{\})/\{\1\}/g' > book.tex
-    lualatex --shell-escape book.tex
+    lualatex --interaction=batchmode --shell-escape book.tex
     # Run again to include ToC
-    lualatex --shell-escape book.tex
+    lualatex --interaction=batchmode --shell-escape book.tex
     rm book.tex book.dvi book.out.ps book.aux book.log book.toc texput.log
   else
     echo "File '$SUMMARY_FILE' does not exist"
@@ -72,4 +72,3 @@ if [ -d "$GITBOOK_REP" ]; then
 else
   echo "Directory '$GITBOOK_REP' does not exist"
 fi
-
