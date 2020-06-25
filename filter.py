@@ -42,8 +42,8 @@ def tables(key, value, format, meta):
                 col_tag = ""
                 return res
             return html([content])
-
-        if match := re.match(r"<(td|th) (col|row)span=\"(\d+)\">", content):
+        match = re.match(r"<(td|th) (col|row)span=\"(\d+)\">", content)
+        if match:
             tag, kind, num = match.groups()
             num = int(num)
             if kind == "row":
@@ -54,7 +54,7 @@ def tables(key, value, format, meta):
                 col_to_add = num - 1
                 pos += num - 1
                 return html(pre_string(content) + [f"<{tag}>"])
-        
+
         if re.search(r"<td|th>", content):
             return html(pre_string(content) + [content])
 
@@ -63,7 +63,7 @@ def table_size_count(key, value, format, meta):
     if key == 'RawBlock':
         global amount_of_columns, table_widths, counting_table
         block_format, content = value
-        
+
         if content == "<table>":
             counting_table = True
         if counting_table:
@@ -82,7 +82,8 @@ def table_size_apply(key, value, format, meta):
         block_format, content = value
 
         if content == "<table>":
-            if n := table_widths.pop(0):
+            n = table_widths.pop(0)
+            if n:
                 tags = [content]
                 tags.append("<colgroup>")
                 tags.extend([f"<col width=\"{int(100/n)}%\">" for i in range(n)])
@@ -93,4 +94,3 @@ def table_size_apply(key, value, format, meta):
 
 if __name__ == "__main__":
     toJSONFilters([tables, table_size_count, table_size_apply])
-
